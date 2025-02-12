@@ -1,2 +1,2 @@
 FROM nginx:alpine
-COPY /nginx/network.conf /etc/nginx/nginx.conf
+COPY /nginx.conf /etc/nginx/nginx.conf
