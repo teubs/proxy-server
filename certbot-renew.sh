@@ -2,6 +2,8 @@
 
 # Macht das Skript ausführbar: chmod +x init-certbot.sh
 
+echo "$(date) - Certbot erneuert von cron" >> /var/log/cron-certbot-debug.log
+
 # Stoppe den Nginx-Container
 echo "Stopping Nginx container..."
 if ! sudo docker container stop proxy_server; then
