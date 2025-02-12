@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Pfad zu deinem init-certbot.sh Skript
-INIT_CERTBOT_PATH="/home/teubs/Repository/proxy-server/certbot-renew.sh"
+INIT_CERTBOT_PATH="$HOME/Repository/proxy-server/certbot-renew.sh"
 
 # Prüfen, ob das Skript existiert und ausführbar ist
 if [ ! -f "$INIT_CERTBOT_PATH" ]; then
