@@ -1,35 +1,49 @@
 #!/bin/bash
 
-# Macht das Skript ausführbar: chmod +x init-certbot.sh
+# Log-Datei mit Zeitstempel
+LOGFILE="/var/log/certbot-renew.log"
 
-echo "$(date) - Certbot erneuert von cron" >> /var/log/cron-certbot-debug.log
+# Funktion zum Loggen mit Zeitstempel
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOGFILE"
+}
 
-# Stoppe den Nginx-Container
-echo "Stopping Nginx container..."
-if ! sudo docker container stop proxy_server; then
-  echo "Failed to stop Nginx container. Exiting."
-  exit 1
+log "🔄 Starte Certbot-Erneuerung..."
+
+# Stoppe Nginx
+log "🛑 Stoppe Nginx-Container..."
+if sudo docker container stop nginx-container 2>&1 | tee -a "$LOGFILE"; then
+    log "✅ Nginx gestoppt."
+else
+    log "❌ Fehler beim Stoppen von Nginx!"
+    exit 1
 fi
 
-# Führe einen Dry-Run der Zertifikatserneuerung durch
-echo "Performing Dry-Run for certificate renewal..."
-if ! sudo certbot renew --dry-run; then
-  echo "Dry-Run failed. Please check Certbot logs."
-  exit 1
+# Dry-Run für die Erneuerung
+log "🔍 Starte Dry-Run für Zertifikatserneuerung..."
+if sudo certbot renew --dry-run 2>&1 | tee -a "$LOGFILE"; then
+    log "✅ Dry-Run erfolgreich."
+else
+    log "❌ Dry-Run fehlgeschlagen! Siehe Logs für Details."
+    exit 1
 fi
 
-# Erneuere die Zertifikate
-echo "Renewing certificates..."
-if ! sudo certbot renew; then
-  echo "Certificate renewal failed. Please check Certbot logs."
-  exit 1
+# Zertifikate erneuern
+log "🔄 Starte echte Zertifikatserneuerung..."
+if sudo certbot renew 2>&1 | tee -a "$LOGFILE"; then
+    log "✅ Zertifikate erneuert."
+else
+    log "❌ Erneuerung fehlgeschlagen! Siehe Logs."
+    exit 1
 fi
 
-# Starte den Nginx-Container neu
-echo "Starting Nginx container..."
-if ! sudo docker container start proxy_server; then
-  echo "Failed to start Nginx container. Exiting."
-  exit 1
+# Starte Nginx neu
+log "🚀 Starte Nginx-Container..."
+if sudo docker container start nginx-container 2>&1 | tee -a "$LOGFILE"; then
+    log "✅ Nginx erfolgreich gestartet."
+else
+    log "❌ Fehler beim Starten von Nginx!"
+    exit 1
 fi
 
-echo "All done successfully."
+log "🎉 Erneuerung abgeschlossen."
