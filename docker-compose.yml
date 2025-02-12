@@ -1,0 +1,6 @@
+services:
+  proxy_server:
+    build: .
+    ports:
+      - "80:80"
+    restart: always
