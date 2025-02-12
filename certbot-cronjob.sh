@@ -12,7 +12,7 @@ fi
 chmod +x "$INIT_CERTBOT_PATH"
 
 # Cron-Eintrag, der hinzugefügt werden soll (täglich um 3 Uhr)
-CRON_ENTRY="0 3 * * * PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; /bin/bash $INIT_CERTBOT_PATH >> /var/log/renew-certbot.log 2>&1"
+CRON_ENTRY="30 5 * * * PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; /bin/bash $INIT_CERTBOT_PATH >> /var/log/renew-certbot.log 2>&1"
 
 # Temporäre Datei erstellen
 TEMP_CRON=$(mktemp)

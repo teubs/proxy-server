@@ -4,7 +4,7 @@
 
 # Stoppe den Nginx-Container
 echo "Stopping Nginx container..."
-if ! sudo docker container stop nginx-container; then
+if ! sudo docker container stop proxy_server; then
   echo "Failed to stop Nginx container. Exiting."
   exit 1
 fi
@@ -25,7 +25,7 @@ fi
 
 # Starte den Nginx-Container neu
 echo "Starting Nginx container..."
-if ! sudo docker container start nginx-container; then
+if ! sudo docker container start proxy_server; then
   echo "Failed to start Nginx container. Exiting."
   exit 1
 fi
