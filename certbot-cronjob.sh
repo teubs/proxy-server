@@ -18,7 +18,7 @@ CRON_ENTRY="* * * * * PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sb
 TEMP_CRON=$(mktemp)
 
 # Aktuelle Crontab-Einträge in die temporäre Datei schreiben
-crontab -l > $TEMP_CRON 2>/dev/null
+sudo crontab -l > $TEMP_CRON 2>/dev/null
 
 # Prüfen, ob der Eintrag bereits existiert
 if ! grep -F "$CRON_ENTRY" $TEMP_CRON; then
@@ -29,7 +29,7 @@ else
 fi
 
 # Die temporäre Datei als neue Crontab setzen
-crontab $TEMP_CRON
+sudo crontab $TEMP_CRON
 
 # Temporäre Datei löschen
 rm $TEMP_CRON
