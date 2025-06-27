@@ -60,18 +60,18 @@ if [[ "$ADD_DOMAIN" == "y" || "$ADD_DOMAIN" == "Y" ]]; then
     echo "🌍 Neue Zertifikatsliste: $ALL_DOMAINS"
     echo "🚀 Starte Certbot zur Erweiterung..."
 
-    # Nginx-Container stoppen, da Certbot Port 80 benötigt
-    echo "🛑 Stoppe den Nginx-Container..."
-    sudo docker container stop nginx-container
+    # proxy-server stoppen, da Certbot Port 80 benötigt
+    echo "🛑 Stoppe den proxy-server..."
+    sudo docker container stop proxy_server
 
     # Certbot mit --expand für das gewählte Zertifikat
     sudo certbot certonly --expand --cert-name "$CERT_NAME" -d $ALL_DOMAINS
 
     echo "✅ Zertifikat wurde erweitert."
 
-    # Nginx-Container wieder starten
-    echo "🚀 Starte den Nginx-Container..."
-    sudo docker container start nginx-container
+    # proxy-server wieder starten
+    echo "🚀 Starte den proxy-server..."
+    sudo docker container start proxy_server
 
 else
     echo "❌ Keine neuen Domains hinzugefügt."

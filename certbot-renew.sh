@@ -11,7 +11,7 @@ log() {
 log "🔄 Starte Certbot-Erneuerung..."
 
 # Stoppe Nginx
-log "🛑 Stoppe Nginx-Container..."
+log "🛑 Stoppe proxy-server..."
 if sudo docker container stop proxy_server 2>&1 | tee -a "$LOGFILE"; then
     log "✅ Nginx gestoppt."
 else
@@ -38,7 +38,7 @@ else
 fi
 
 # Starte Nginx neu
-log "🚀 Starte Nginx-Container..."
+log "🚀 Starte proxy-server..."
 if sudo docker container start proxy_server 2>&1 | tee -a "$LOGFILE"; then
     log "✅ Nginx erfolgreich gestartet."
 else
